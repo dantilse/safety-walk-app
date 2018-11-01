@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const readyState = 'ready';
 const scanStarted = 'scanStarted';
@@ -15,7 +15,12 @@ const ButtonContainer = props => (
         case readyState:
           return (
             <View style={styles.layout}>
-              <Button onPress={() => props.statusChange(scanStarted)} title="Scan" />
+              <TouchableOpacity
+                onPress={() => props.statusChange(scanStarted)}
+                style={styles.button}
+              >
+                <Text style={styles.buttonText}>Scan</Text>
+              </TouchableOpacity>
             </View>
           );
         case scanStarted:
@@ -59,15 +64,31 @@ export default ButtonContainer;
 const styles = StyleSheet.create({
   layout: {
     flexDirection: 'row',
+    alignItems: 'center',
     flexGrow: 1,
     justifyContent: 'space-around'
+  },
+  button: {
+    paddingTop: 10,
+    paddingRight: 20,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    backgroundColor: 'red',
+    borderRadius: 3
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold'
   },
   center: {
     marginRight: 'auto',
     marginLeft: 'auto'
   },
   main: {
-    flexDirection: 'row'
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    height: 80,
+    marginTop: 'auto'
   },
   instructions: {
     textAlign: 'center',
