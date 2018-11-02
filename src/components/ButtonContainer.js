@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+// helpers
+import button from '../styles/Buttons';
 
 const readyState = 'ready';
 const scanStarted = 'scanStarted';
@@ -69,24 +71,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   button: {
-    paddingTop: 10,
-    paddingRight: 20,
-    paddingBottom: 10,
-    paddingLeft: 20,
-    backgroundColor: 'red',
-    borderRadius: 3
+    ...button.base,
+    ...button.primary
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold'
+    ...button.textBase,
+    ...button.textPrimary
   },
   center: {
     marginRight: 'auto',
     marginLeft: 'auto'
   },
   main: {
-    // flexDirection: 'row',
-    // alignItems: 'center',
     height: 80,
     marginTop: 'auto'
   },

@@ -4,7 +4,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 // components
 // helpers
-import colors from './Colors';
+import colors from '../styles/Colors';
 
 const Header = () => (
   <View style={styles.viewStyle}>
