@@ -12,6 +12,8 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 import Body from './src/components/Body';
 import Header from './src/components/Header';
 import Footer from './src/components/Footer';
+// helpers
+import colors from './src/components/Colors';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -23,20 +25,38 @@ export default class App extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      appStatus: 'ready'
+      appStatus: 'ready',
+      scanCount: 0
     };
   }
 
   handleAppStatusChange = value => {
-    this.setState({ appStatus: value });
+    const expr = value;
+    switch (expr) {
+      case 'ready':
+        return this.setState({ appStatus: value, scanCount: 0 });
+        break;
+      case 'scanStarted':
+        return this.setState({ appStatus: value });
+        break;
+      case 'scanning':
+        return this.setState({ appStatus: value, scanCount: this.state.scanCount + 1 });
+        break;
+      default:
+        return this.setState({ appStatus: value });
+        break;
+    }
   };
 
   render() {
     return (
       <View style={styles.container}>
         <Header />
-        <Body status={this.state.appStatus} statusChange={this.handleAppStatusChange.bind(this)} />
-        <Footer />
+        <Body count={this.state.scanCount} />
+        <Footer
+          status={this.state.appStatus}
+          statusChange={this.handleAppStatusChange.bind(this)}
+        />
       </View>
     );
   }
@@ -55,11 +75,8 @@ export default class App extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     flexGrow: 1,
-    backgroundColor: '#F5FCFF'
+    backgroundColor: colors.white
   },
   welcome: {
     fontSize: 20,
