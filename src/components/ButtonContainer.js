@@ -17,26 +17,23 @@ const ButtonContainer = props => (
         case readyState:
           return (
             <View style={styles.layout}>
-              <TouchableOpacity
-                onPress={() => props.statusChange(scanStarted)}
-                style={styles.button}
-              >
+              <TouchableOpacity onPress={() => props.statusChange(scanning)} style={styles.button}>
                 <Text style={styles.buttonText}>Scan</Text>
               </TouchableOpacity>
-            </View>
-          );
-        case scanStarted:
-          return (
-            <View style={styles.layout}>
-              <Button onPress={() => props.statusChange(readyState)} title="Cancel" />
-              <Button onPress={() => props.statusChange(scanning)} title="Continue" />
             </View>
           );
         case scanning:
           return (
             <View style={styles.layout}>
+              <Button onPress={() => props.statusChange(readyState)} title="Cancel" />
+              <Button onPress={() => props.statusChange(scanStarted)} title="Continue" />
+            </View>
+          );
+        case scanStarted:
+          return (
+            <View style={styles.layout}>
               <Button onPress={() => props.statusChange(complete)} title="Finish" />
-              <Button onPress={() => props.statusChange(scanStarted)} title="Scan again" />
+              <Button onPress={() => props.statusChange(scanning)} title="Scan again" />
             </View>
           );
         case complete:

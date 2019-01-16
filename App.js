@@ -15,32 +15,43 @@ import Footer from './src/components/Footer';
 // helpers
 import colors from './src/styles/Colors';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' + 'Shake or press menu button for dev menu'
-});
-
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props) {
     super(props);
-    this.state = {
-      appStatus: 'ready',
-      scanCount: 0
-    };
+    this.state = defaultState;
   }
 
   handleAppStatusChange = value => {
     const expr = value;
     switch (expr) {
       case 'ready':
-        return this.setState({ appStatus: value, scanCount: 0 });
+        return this.setState(defaultState);
         break;
       case 'scanStarted':
-        return this.setState({ appStatus: value });
+        console.log(this.state);
+        return this.setState({
+          appStatus: value,
+          scanCount: this.state.scanCount + 1
+        });
         break;
       case 'scanning':
-        return this.setState({ appStatus: value, scanCount: this.state.scanCount + 1 });
+        return this.setState({
+          appStatus: value,
+          scan: {
+            companyId: 'Company name',
+            tag: [
+              ...this.state.scan.tag,
+              {
+                tagNumber: parseInt(Math.random() * 100000, 10),
+                tagLocation: this.state.scanCount % 2 ? 'front' : 'rear',
+                tagType: this.state.scanCount % 2 ? 'exterior' : 'interior'
+              }
+            ],
+            vehicleId: 354,
+            vehicleType: 'truck'
+          }
+        });
         break;
       default:
         return this.setState({ appStatus: value });
@@ -52,7 +63,7 @@ export default class App extends Component<Props> {
     return (
       <View style={styles.container}>
         <Header />
-        <Body count={this.state.scanCount} />
+        <Body count={this.state.scanCount} status={this.state.appStatus} />
         <Footer
           status={this.state.appStatus}
           statusChange={this.handleAppStatusChange.bind(this)}
@@ -62,16 +73,17 @@ export default class App extends Component<Props> {
   }
 }
 
-// <Text style={styles.welcome}>Welcome to React Native!</Text>
-// <Text style={styles.instructions}>To get started, edit App.js</Text>
-// <Text style={styles.instructions}>{instructions}</Text>
-
-// const styles = {
-//   appStyle: {
-//     flexGrow: 1,
-//     backgroundColor: '#fafafa'
-//   }
-// };
+// set default state here to make reverting back easier
+const defaultState = {
+  appStatus: 'ready',
+  scanCount: 0,
+  scan: {
+    companyId: '',
+    tag: [],
+    vehicleId: '',
+    vehicleType: ''
+  }
+};
 
 const styles = StyleSheet.create({
   container: {

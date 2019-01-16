@@ -1,0 +1,24 @@
+{
+  "users": {
+    "companyId1": {
+      "employees": {
+        "employee1": {
+          "name": "John",
+          "phone": "512-456-7890"
+        },
+        "employee2": {
+          "name": "Jane",
+          "phone": "512-123-4567"
+        }
+      }
+    }
+  },
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid"
+      }
+    }
+  }
+}
