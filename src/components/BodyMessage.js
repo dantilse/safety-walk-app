@@ -30,7 +30,7 @@ const BodyMessage = props => (
         case 'complete':
           return (
             <View style={styles.layout}>
-              <Text>Complete state image</Text>
+              <Text>{`${props.count} successful scans`}</Text>
               <Image source={require('../images/headshot.png')} style={styles.image} />
             </View>
           );

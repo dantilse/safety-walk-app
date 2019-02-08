@@ -15,6 +15,8 @@ import Footer from './src/components/Footer';
 // helpers
 import colors from './src/styles/Colors';
 
+const isFirstScan = index => index === 0;
+
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props) {
@@ -29,29 +31,46 @@ export default class App extends Component<Props> {
         return this.setState(defaultState);
         break;
       case 'scanStarted':
-        console.log(this.state);
         return this.setState({
           appStatus: value,
           scanCount: this.state.scanCount + 1
         });
         break;
       case 'scanning':
-        return this.setState({
+        // isFirstScan(this.state.scanCount)
+        //   ? console.log('this IS the first scan')
+        //   : console.log('this is not the first scan');
+
+        // set loading state so a spinner shows where the button goes?
+        // get the timestamp and location from the phone
+        // get the tag information from the NFC tag
+        // store this info in a unique scan area
+        // reset the state for the next scan
+
+        if (isFirstScan(this.state.scanCount)) {
+          navigator.geolocation.getCurrentPosition(
+            position => {
+              this.setState({
+                location: position.coords,
+                timestamp: position.timestamp
+              });
+            },
+            error => error.message,
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+          );
+        }
+
+        this.setState({
           appStatus: value,
-          scan: {
-            companyId: 'Company name',
-            tag: [
-              ...this.state.scan.tag,
-              {
-                tagNumber: parseInt(Math.random() * 100000, 10),
-                tagLocation: this.state.scanCount % 2 ? 'front' : 'rear',
-                tagType: this.state.scanCount % 2 ? 'exterior' : 'interior'
-              }
-            ],
-            vehicleId: 354,
-            vehicleType: 'truck'
-          }
+          scans: [
+            ...this.state.scans,
+            {
+              tagNumber: parseInt(Math.random() * 100000, 10),
+              tagType: this.state.scanCount % 2 ? 'exterior' : 'interior'
+            }
+          ]
         });
+        console.log(JSON.stringify(this.state));
         break;
       default:
         return this.setState({ appStatus: value });
@@ -63,7 +82,8 @@ export default class App extends Component<Props> {
     return (
       <View style={styles.container}>
         <Header />
-        <Body count={this.state.scanCount} status={this.state.appStatus} />
+        <Body count={this.state.scanCount} status={this.state.appStatus} scans={this.state.scan} />
+        <Text>{JSON.stringify(this.state)}</Text>
         <Footer
           status={this.state.appStatus}
           statusChange={this.handleAppStatusChange.bind(this)}
@@ -76,13 +96,10 @@ export default class App extends Component<Props> {
 // set default state here to make reverting back easier
 const defaultState = {
   appStatus: 'ready',
+  location: {},
   scanCount: 0,
-  scan: {
-    companyId: '',
-    tag: [],
-    vehicleId: '',
-    vehicleType: ''
-  }
+  scans: [],
+  timestamp: 0
 };
 
 const styles = StyleSheet.create({

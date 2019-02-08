@@ -6,7 +6,7 @@ import BodyMessage from './BodyMessage';
 
 const Body = props => (
   <View style={styles.bodyStyle}>
-    <BodyMessage status={props.status} />
+    <BodyMessage status={props.status} {...props} />
     <BodyNotice count={props.count} {...props} />
   </View>
 );

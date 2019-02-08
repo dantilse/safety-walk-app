@@ -18,7 +18,7 @@ const ButtonContainer = props => (
           return (
             <View style={styles.layout}>
               <TouchableOpacity onPress={() => props.statusChange(scanning)} style={styles.button}>
-                <Text style={styles.buttonText}>Scan</Text>
+                <Text style={styles.buttonText}>Scan now</Text>
               </TouchableOpacity>
             </View>
           );
